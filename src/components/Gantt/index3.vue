@@ -1,10 +1,12 @@
 <script lang="ts">
-import VirtualList from "vue-virtual-scroll-list";
+// import VirtualList from "vue-virtual-scroll-list";
 import Vue from "vue";
+import MhyInfinityList from "../infinityList/src/index.vue";
 
 export default Vue.extend({
   components: {
     // VirtualList,
+    MhyInfinityList,
   },
   props: {
     size: {
@@ -18,9 +20,12 @@ export default Vue.extend({
     },
   },
   data() {
-    // const list = [...Array(100)].map();
+    const list = [...Array(1000)].map((item, index) => ({
+      id: index,
+      value: index,
+    }));
     return {
-      // list,
+      list,
     };
   },
 });
@@ -29,7 +34,22 @@ export default Vue.extend({
 <template>
   <div class="gantt-view" :style="{ height: size.height + 'px' }">
     <div class="gantt-view-header">
-      <div class="group-date-wrapper"></div>
+      <div class="group-date-wrapper">
+        <MhyInfinityList
+          :list="list"
+          :horizontal="true"
+          :averageSize="100"
+          :minSize="100"
+          dataKey="id"
+          :start="30"
+        >
+          <template #default="{ row }">
+            <div class="my-row2" style="width: 30px; height: 30px">
+              {{ row.id }}{{ row.value }}
+            </div>
+          </template>
+        </MhyInfinityList>
+      </div>
       <div class="data-wrapper"></div>
     </div>
   </div>
